@@ -22,6 +22,11 @@ def get_date_and_download_path(url):
 
 
 def delete_redundant_report(data_path):
+    """
+    The method deletes files that are not in our scope
+    :param data_path: The data path
+    :return: nothing.
+    """
     files_names = os.listdir(data_path)
     for name in files_names:
         if name.endswith('.2015.xlsx') or name.endswith('01.2016.xlsx') or name.endswith('02.2016.xlsx') or\
@@ -53,6 +58,11 @@ def download_data(data_path):
 
 
 def get_cities_names(file_path):
+    """
+    The method returns the cities names according to the sheets structure
+    :param file_path: The path that the excels are saved.
+    :return: DataFrame that contains the cities names
+    """
     excel_app = xw.App(visible=False)
     wb = excel_app.books.open(file_path)
     sheet = wb.sheets[0]
@@ -61,6 +71,11 @@ def get_cities_names(file_path):
 
 
 def get_diseases_names(file_path):
+    """
+    The method returns the diseases names according to the sheets structure
+    :param file_path: The path that the excels are saved.
+    :return: DataFrame that contains the diseases names
+    """
     excel_app = xw.App(visible=False)
     wb = excel_app.books.open(file_path)
     sheet = wb.sheets[0]
@@ -71,6 +86,11 @@ def get_diseases_names(file_path):
 
 
 def get_data_from_files(data_path):
+    """
+    Computes the final data from the excels.
+    :param data_path: The path that the excels are saved.
+    :return: the Final DataFrame that contains all the excels data.
+    """
     files_names = os.listdir(data_path).copy()
     cities = get_cities_names("{}/{}".format(data_path,files_names[0]))
     diseases = get_diseases_names("{}/{}".format(data_path,files_names[0]))
@@ -96,13 +116,23 @@ def get_data_from_files(data_path):
 
 
 def save_data(raw_path, saving_path):
+    """
+    Save the processed data to csv.
+    :param raw_path: the excels folder
+    :param saving_path: the path that you want to save the processed data.
+    """
     download_data(raw_path)
     get_data_from_files(raw_path).to_csv('{}/health_data.csv'.format(saving_path))
 
 
 def load_data(raw_path, saving_path):
+    """
+    load the data after download and processing. If the data is not exist then
+    the method will download and process it.
+    :param raw_path: the excels folder
+    :param saving_path: the path that you want to save the processed data.
+    :return: the DataFrame of the processed data.
+    """
     if not os.path.exists('{}/health_data.csv'.format(saving_path)):
         save_data(raw_path, saving_path)
     return pd.read_csv('{}/health_data.csv'.format(saving_path))
-
-
