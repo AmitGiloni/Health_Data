@@ -11,3 +11,7 @@ In order to use this code, the following required packages need to be installed 
 - beautifulSoup4 == 4.8.2
 
 ### Run the code
+In order to use the existing code you can use the "load_data(raw_path, saving_path)" function.
+
+### Limitations
+This was last reviewd on 01/06/20.
